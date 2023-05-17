@@ -1,7 +1,25 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
+@Entity({name: 'items'})
 export class Item {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  
+  @PrimaryGeneratedColumn('uuid')
+  @Field(() => String)
+  id: string;
+
+  @Column('text')
+  @Field(() => String)
+  name: string;
+
+  @Column('int')
+  @Field(() => Float)
+  quantity: number;
+
+  @Column('text', {nullable: true})
+  @Field(() => String, {nullable: true})
+  quantityUnits?: string;
+
+
 }
