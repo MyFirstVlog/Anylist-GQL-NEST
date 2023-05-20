@@ -11,7 +11,7 @@ type Item {
 
 type Query {
   findAll: [Item!]!
-  item(id: Int!): Item!
+  findOne(id: ID!): Item!
 }
 
 type Mutation {
