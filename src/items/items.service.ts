@@ -31,8 +31,16 @@ export class ItemsService {
     return item;
   }
 
-  update(id: number, updateItemInput: UpdateItemInput) {
-    return `This action updates a #${id} item`;
+  async update(updateItemInput : UpdateItemInput) {
+
+    const item = await this.itemRepository.preload(updateItemInput); //* Automatically search inside the object for an ID --> where({id})
+
+    console.log({item});
+    
+
+    const itemSaved = await this.itemRepository.save(item);
+
+    return itemSaved;
   }
 
   remove(id: number) {
