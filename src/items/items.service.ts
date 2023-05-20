@@ -32,18 +32,17 @@ export class ItemsService {
   }
 
   async update(updateItemInput : UpdateItemInput) {
-
     const item = await this.itemRepository.preload(updateItemInput); //* Automatically search inside the object for an ID --> where({id})
 
-    console.log({item});
-    
+    if(!item) throw new NotFoundException(`item with id ${updateItemInput.id} not found`);
 
-    const itemSaved = await this.itemRepository.save(item);
-
-    return itemSaved;
+    return await this.itemRepository.save(item);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async remove(id: string) {
+    const item = await this.findOne(id);
+    await this.itemRepository.delete(id); //* remove through criteria
+    // await this.itemRepository.remove(item); //* remove through entities
+    return {...item, id};
   }
 }
