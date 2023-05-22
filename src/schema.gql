@@ -10,8 +10,11 @@ type Item {
 }
 
 type User {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: ID!
+  fullName: String!
+  email: String!
+  roles: [String!]!
+  isBlocked: Boolean!
 }
 
 type Query {
