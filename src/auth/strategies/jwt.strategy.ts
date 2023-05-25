@@ -3,11 +3,14 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { ConfigService } from '@nestjs/config';
 import { User } from '../../users/entities/user.entity';
+import { JwtPayload } from "../../interfaces/jwt-payload.interface";
+import { AuthService } from "../auth.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
-        configService: ConfigService
+        private readonly authService: AuthService,
+        configService: ConfigService,
     ){
         super({
             secretOrKey: configService.get('JWT_SECRET'), //* To sign 
@@ -15,11 +18,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         })
     }
 
-    async validate(payload: any): Promise<User> { //* This must be func name, here the token is already validated
+    async validate(payload: JwtPayload): Promise<User> { //* This must be func name, here the token is already validated
 
-        console.log({payload});
+        const {id} = payload;
 
-        throw new UnauthorizedException('Usted no puede entrar aqui sapo')
-        
+        const user = await this.authService.validateUser(id);
+
+        return user;
     }
 }

@@ -64,6 +64,19 @@ export class UsersService {
     }
   }
 
+  async findOneById(id: string){
+    try {
+      const user = await this.userRepository.findOneBy({id});
+
+      if(user) return user;
+
+      throw new NotFoundException(`User with id ${id} not found`)
+
+    } catch (error) {
+      this.handleDbErrors(error);
+    }
+  }
+
   private handleDbErrors(error: any): never{
     if(error.code  === '23505') throw new BadRequestException(error.detail.replace('Key', '')); //* Errores propios de postgres
 
