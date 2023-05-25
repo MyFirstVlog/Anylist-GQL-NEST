@@ -4,23 +4,29 @@ import { SignupInput } from './dto/input/signup.input';
 import { UsersService } from '../users/users.service';
 import { LoginInput } from './dto/input/login.input';
 import * as bcrypt from 'bcrypt'; 
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
     constructor(
-        private readonly usersService: UsersService
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService
     ){}
+
+    private getJwt(userId: string){
+        return this.jwtService.sign({
+            id: userId
+        });
+    }
 
     async signup(signupInput: SignupInput): Promise<AuthResponse>{
 
         const user = await this.usersService.create(signupInput);
 
-        const token = "ABC123";
-
         return {
             user,
-            token
+            token: this.getJwt(user.id)
         }
     }
 
@@ -33,12 +39,10 @@ export class AuthService {
         if(!bcrypt.compareSync(loginInput.password, user.password)){
             throw new BadRequestException(`Credentials incorrect`);
         };
-
-        const token = "ABC123";
         
         return {
             user,
-            token
+            token: this.getJwt(user.id)
         }
     }
 }
