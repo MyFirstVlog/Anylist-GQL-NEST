@@ -1,17 +1,27 @@
-import { ExecutionContext, InternalServerErrorException, createParamDecorator } from "@nestjs/common";
+import { ExecutionContext, ForbiddenException, InternalServerErrorException, createParamDecorator } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
+import { ValidRoles } from "src/auth/enums/valid-roles.enum";
+import { User } from "../users/entities/user.entity";
 
 
 
 
-export const CurrentUser = createParamDecorator((roles = [], context: ExecutionContext) => {
+export const CurrentUser = createParamDecorator((roles: ValidRoles[] = [], context: ExecutionContext) => {
 
     const ctx = GqlExecutionContext.create(context);
-    const user = ctx.getContext().req.user;
+    const user: User = ctx.getContext().req.user;
 
     if(!user) throw new InternalServerErrorException('User was not caught on guards');
 
     console.log('extracting user in custom decorator', {user});
+
+    if(roles.length === 0) return user;
+
+    for (const role of user.roles){
+        if(roles.includes(role as ValidRoles)){
+            return user;
+        }
+    }
     
-    return user;
+    throw new ForbiddenException(`User ${user.fullName} need a valid role ${[roles]}`);
 })
