@@ -25,9 +25,15 @@ type AuthResponse {
 type Query {
   findAll: [Item!]!
   findOne(id: ID!): Item!
-  users: [User!]!
+  findAllUsers(roles: [ValidRoles!] = []): [User!]!
   user(id: ID!): User!
   revalidate: AuthResponse!
+}
+
+enum ValidRoles {
+  user
+  admin
+  superUser
 }
 
 type Mutation {
