@@ -36,7 +36,7 @@ export class User {
   @Field(() => Boolean)
   isActive: boolean;
 
-  @ManyToOne(() => User, (user) => user.lastUpdatedBy, {nullable: true})
+  @ManyToOne(() => User, (user) => user.lastUpdatedBy, {nullable: true, lazy: true})
   @JoinColumn({name: 'lastUpdatedBy'})
   @Field(() => User, {nullable: true})
   lastUpdatedBy?: User

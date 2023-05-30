@@ -38,7 +38,14 @@ export class UsersService {
 
   async findAll(roles: ValidRoles[]): Promise<User[]> {
     
-    if(roles.length === 0) return this.userRepository.find();
+    if(roles.length === 0) 
+      return this.userRepository
+        .find();
+        // .find({
+        //   relations:{
+        //     lastUpdatedBy: true,
+        //   }
+        // });
 
     const queryBuilder = this.userRepository.createQueryBuilder()
       .andWhere('ARRAY[roles] && ARRAY[:...roles]')
@@ -56,10 +63,11 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  async block(id: string): Promise<User> {
+  async block(id: string, currentUser: User): Promise<User> {
     const user = await this.findOneById(id);
 
     user.isActive = false;
+    user.lastUpdatedBy = currentUser;
 
     return await this.userRepository.save(user);
   }
