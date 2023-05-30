@@ -59,8 +59,25 @@ export class UsersService {
     throw new Error(`User ${id} not found`);
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserInput: UpdateUserInput, userAdmin: User): Promise<User> {
+
+    try {
+
+      let user = await this.userRepository.preload({
+        ...updateUserInput,
+        id
+      });
+
+      console.log({userAdmin});
+      
+      user.lastUpdatedBy = userAdmin;
+
+      return await this.userRepository.save(user);
+      
+    } catch (error) {
+      this.handleDbErrors(error)
+    }
+
   }
 
   async block(id: string, currentUser: User): Promise<User> {

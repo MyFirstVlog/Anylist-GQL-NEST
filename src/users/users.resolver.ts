@@ -38,4 +38,12 @@ export class UsersResolver {
   ): Promise<User> {
     return this.usersService.block(id, user);
   }
+
+  @Mutation(() => User, {name: 'updateUser'})
+  updateUser(
+    @Args('updateUserInput')updateUserInput: UpdateUserInput,
+    @CurrentUser([ValidRoles.admin]) user: User
+  ){
+    return this.usersService.update(updateUserInput.id, updateUserInput, user)
+  }
 }
