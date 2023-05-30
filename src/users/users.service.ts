@@ -56,8 +56,12 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  block(id: string): Promise<User> {
-    throw new Error(`User ${id} not found`);
+  async block(id: string): Promise<User> {
+    const user = await this.findOneById(id);
+
+    user.isActive = false;
+
+    return await this.userRepository.save(user);
   }
 
   async findOneByEmail(loginInput: LoginInput){

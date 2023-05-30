@@ -14,7 +14,8 @@ type User {
   fullName: String!
   email: String!
   roles: [String!]!
-  isBlocked: Boolean!
+  isActive: Boolean!
+  lastUpdatedBy: User
 }
 
 type AuthResponse {

@@ -50,7 +50,7 @@ export class AuthService {
     async validateUser(id: string): Promise<User>{
         const user = await this.usersService.findOneById(id);
 
-        if(!user.isBlocked) throw new UnauthorizedException(`User is not active, please contact support`);
+        if(!user.isActive) throw new UnauthorizedException(`User is not active, please contact support`);
 
         delete user.password;
 
