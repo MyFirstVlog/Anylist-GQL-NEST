@@ -30,8 +30,6 @@ import { JwtService } from '@nestjs/jwt';
 
           const payload = jwtService.decode(token);
           if(!Object.keys(payload).includes('id')) throw new Error('body not valid'); 
-
-          console.log({payload})
         }
       }),
     }),

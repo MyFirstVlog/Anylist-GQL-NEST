@@ -3,6 +3,7 @@ import { CreateItemInput, UpdateItemInput} from './dto/inputs';
 import { Repository } from 'typeorm';
 import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class ItemsService {
@@ -12,15 +13,33 @@ export class ItemsService {
     private readonly itemRepository: Repository<Item>
   ){}
 
-  async create(createItemInput: CreateItemInput) {
-    const item = this.itemRepository.create(createItemInput);
+  async create(createItemInput: CreateItemInput, user: User) {
+    const item = this.itemRepository.create({
+      ...createItemInput,
+      user
+    });
     const itemSaved = await this.itemRepository.save(item);
     console.log({itemSaved});
     return itemSaved;
   }
 
-  findAll() {
-    return this.itemRepository.find();
+  findAll(user: User) {
+    console.log("user id", user.id);
+    
+    return this.itemRepository.findBy({
+      user: {
+        id: user.id
+      }
+    });
+
+    //* They both work
+    // return this.itemRepository.find({
+    //   where: {
+    //     user: {
+    //       id: user.id
+    //     }
+    //   }
+    // });
   }
 
   async findOne(id: string) {

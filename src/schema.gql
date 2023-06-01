@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Item {
-  id: String!
-  name: String!
-  quantity: Float!
-  quantityUnits: String
-}
-
 type User {
   id: ID!
   fullName: String!
@@ -16,6 +9,14 @@ type User {
   roles: [String!]!
   isActive: Boolean!
   lastUpdatedBy: User
+  items: [Item!]!
+}
+
+type Item {
+  id: String!
+  name: String!
+  quantityUnits: String
+  user: User!
 }
 
 type AuthResponse {
@@ -27,7 +28,7 @@ type Query {
   revalidate: AuthResponse!
   findAllUsers(roles: [ValidRoles!] = []): [User!]!
   user(id: ID!): User!
-  findAll: [Item!]!
+  items: [Item!]!
   findOne(id: ID!): Item!
 }
 
@@ -69,13 +70,11 @@ input UpdateUserInput {
 
 input CreateItemInput {
   name: String!
-  quantity: Float!
   quantityUnits: String
 }
 
 input UpdateItemInput {
   name: String
-  quantity: Float
   quantityUnits: String
   id: ID!
 }
