@@ -42,15 +42,22 @@ export class ItemsService {
     // });
   }
 
-  async findOne(id: string) {
-    const item = await this.itemRepository.findOneBy({id});
+  async findOne(id: string, user: User) {
+    const item = await this.itemRepository.findOneBy({
+      id,
+      user: {
+        id: user.id
+      }
+    });
 
     if(!item) throw new NotFoundException(`item with id ${id} not found`);
 
     return item;
   }
 
-  async update(updateItemInput : UpdateItemInput) {
+  async update(updateItemInput : UpdateItemInput, user: User) {
+    await this.findOne(updateItemInput.id, user);
+    
     const item = await this.itemRepository.preload(updateItemInput); //* Automatically search inside the object for an ID --> where({id})
 
     if(!item) throw new NotFoundException(`item with id ${updateItemInput.id} not found`);
@@ -58,8 +65,8 @@ export class ItemsService {
     return await this.itemRepository.save(item);
   }
 
-  async remove(id: string) {
-    const item = await this.findOne(id);
+  async remove(id: string, user: User) {
+    const item = await this.findOne(id, user);
     await this.itemRepository.delete(id); //* remove through criteria
     // await this.itemRepository.remove(item); //* remove through entities
     return {...item, id};
