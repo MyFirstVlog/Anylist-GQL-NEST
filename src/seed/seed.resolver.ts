@@ -7,10 +7,10 @@ export class SeedResolver {
   
   constructor(
     private readonly seedService: SeedService
-  ) {}ß
+  ) {}
 
   @Mutation(() => Boolean)
-  async executeSeed(): Promise<Boolean>{
+  executeSeed(): Promise<Boolean>{
     return this.seedService.executeSeed();
   }
 }
