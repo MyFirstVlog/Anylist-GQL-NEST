@@ -8,6 +8,7 @@ import { CurrentUser } from 'src/decoratos/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
 import { PaginationArgs } from 'src/common/dto/args/pagination.args';
+import { SearchArgs } from '../common/dto/args/search.args';
 @Resolver(() => Item)
 @UseGuards(JwtAuthGuard)
 export class ItemsResolver {
@@ -24,11 +25,12 @@ export class ItemsResolver {
   @Query(() => [Item], { name: 'items' })
   findAll(
     @CurrentUser() user: User,
-    @Args() paginationArgs: PaginationArgs
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs
   ) {
-    console.log({paginationArgs});
+    console.log({paginationArgs, searchArgs});
     
-    return this.itemsService.findAll(user);
+    return this.itemsService.findAll(user, paginationArgs);
   }
 
   @Query(() => Item, { name: 'findOne' })

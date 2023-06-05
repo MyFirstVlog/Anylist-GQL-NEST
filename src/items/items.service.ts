@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Injectable()
 export class ItemsService {
@@ -23,23 +24,32 @@ export class ItemsService {
     return itemSaved;
   }
 
-  findAll(user: User) {
+  findAll(user: User, paginationArgs: PaginationArgs) {
     console.log("user id", user.id);
-    
-    return this.itemRepository.findBy({
-      user: {
-        id: user.id
-      }
-    });
 
-    //* They both work
-    // return this.itemRepository.find({
-    //   where: {
-    //     user: {
-    //       id: user.id
-    //     }
+    const {limit, offset} = paginationArgs;
+
+    // return this.itemRepository.findBy({
+    //   user: {
+    //     id: user.id
     //   }
     // });
+
+    console.log({limit, offset})
+
+    //* They both work
+    return this.itemRepository.find({
+      take: limit,
+      skip: offset,
+      where: {
+        user: {
+          id: user.id
+        }
+      },
+      order: {
+        name: 'ASC'
+      }
+    });
   }
 
   async findOne(id: string, user: User) {
