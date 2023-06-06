@@ -11,13 +11,16 @@ import { ItemsService } from 'src/items/items.service';
 import { Item } from '../items/entities/item.entity';
 import { PaginationArgs } from 'src/common/dto/args/pagination.args';
 import { SearchArgs } from '../common/dto/args/search.args';
+import { List } from '../lists/entities/list.entity';
+import { ListsService } from '../lists/lists.service';
 
 @Resolver(() => User)
 @UseGuards(JwtAuthGuard)
 export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
-    private readonly itemsService: ItemsService
+    private readonly itemsService: ItemsService,
+    private readonly listsService: ListsService,
   ) {}
 
   @Query(() => [User], { name: 'findAllUsers' })
@@ -67,5 +70,12 @@ export class UsersResolver {
     @Args() searchArgs: SearchArgs
   ){
     return await this.itemsService.findAll(user, paginationArgs, searchArgs);
+  }
+
+  @ResolveField(() => [List], {name: 'getListByUser'})
+  async getListsByUser(
+    @Parent() user: User,
+  ){
+    return await this.listsService.findAll(user);
   }
 }

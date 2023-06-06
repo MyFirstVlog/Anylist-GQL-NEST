@@ -17,6 +17,7 @@ type User {
   lastUpdatedBy: User
   getItemsCount: Int!
   items(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
+  getListByUser: [List!]!
 }
 
 type Item {
@@ -55,10 +56,10 @@ type Mutation {
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
   removeItem(id: ID!): Item!
-  executeSeed: Boolean!
   CreateList(createListInput: CreateListInput!): List!
   updateList(updateListInput: UpdateListInput!): List!
   removeList(id: ID!): List!
+  executeSeed: Boolean!
 }
 
 input SignupInput {
