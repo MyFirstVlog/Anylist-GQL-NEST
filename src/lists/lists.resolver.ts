@@ -39,12 +39,18 @@ export class ListsResolver {
   }
 
   @Mutation(() => List)
-  updateList(@Args('updateListInput') updateListInput: UpdateListInput) {
-    return this.listsService.update(updateListInput.id, updateListInput);
+  updateList(
+    @Args('updateListInput') updateListInput: UpdateListInput,
+    @CurrentUser([ValidRoles.admin]) user: User
+  ) {
+    return this.listsService.update(updateListInput.id, updateListInput, user);
   }
 
   @Mutation(() => List)
-  removeList(@Args('id', { type: () => Int }) id: number) {
-    return this.listsService.remove(id);
+  removeList(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser([ValidRoles.admin]) user: User
+  ) {
+    return this.listsService.remove(id, user);
   }
 }

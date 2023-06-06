@@ -35,8 +35,6 @@ export class ListsService {
   }
 
   async findOne(id: string, user: User) {
-    console.log("en el findOneeeee",{id, user});
-    
     const list = await this.listRepository.findOne({
       where: {
         id,
@@ -51,11 +49,21 @@ export class ListsService {
      return list;
   }
 
-  update(id: number, updateListInput: UpdateListInput) {
-    return `This action updates a #${id} list`;
+  async update(id: string, updateListInput: UpdateListInput, user: User) {
+    await this.findOne(updateListInput.id, user);
+
+    const list = await this.listRepository.preload(updateListInput);
+
+    if(!list) throw new NotFoundException(`list with id ${updateListInput.id} not found`);
+
+    return await this.listRepository.save(list);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  async remove(id: string, user: User) {
+    const list = await this.findOne(id, user);
+
+    const listRemoved = await this.listRepository.remove(list);
+
+    return {...listRemoved,user, id};
   }
 }
