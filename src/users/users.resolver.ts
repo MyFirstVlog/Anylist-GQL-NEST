@@ -8,6 +8,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { CurrentUser } from 'src/decoratos/current-user.decorator';
 import { ValidRoles } from '../auth/enums/valid-roles.enum';
 import { ItemsService } from 'src/items/items.service';
+import { Item } from '../items/entities/item.entity';
+import { PaginationArgs } from 'src/common/dto/args/pagination.args';
+import { SearchArgs } from '../common/dto/args/search.args';
 
 @Resolver(() => User)
 @UseGuards(JwtAuthGuard)
@@ -55,5 +58,14 @@ export class UsersResolver {
     @Parent() user: User
   ){
     return await this.itemsService.itemsFromUser(user);
+  }
+
+  @ResolveField(() => [Item], {name: 'items'} )
+  async getItemsByUser(
+    @Parent() user: User,
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs
+  ){
+    return await this.itemsService.findAll(user, paginationArgs, searchArgs);
   }
 }
