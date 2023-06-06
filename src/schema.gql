@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type List {
+  id: ID!
+  name: String!
+  user: User!
+}
+
 type User {
   id: ID!
   fullName: String!
@@ -25,11 +31,6 @@ type AuthResponse {
   user: User!
 }
 
-type List {
-  id: String!
-  name: String!
-}
-
 type Query {
   revalidate: AuthResponse!
   findAllUsers(roles: [ValidRoles!] = []): [User!]!
@@ -37,7 +38,7 @@ type Query {
   items(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
   findOne(id: ID!): Item!
   findAllLists: [List!]!
-  findOneList(id: Int!): List!
+  findOneList(id: ID!): List!
 }
 
 enum ValidRoles {

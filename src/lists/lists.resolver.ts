@@ -19,19 +19,23 @@ export class ListsResolver {
     @Args('createListInput') createListInput: CreateListInput,
     @CurrentUser([ValidRoles.admin]) user: User
   ): Promise<List> {
-    console.log({user, createListInput});
-    
-    throw new Error('JajJAajjja')
+
+    return this.listsService.create(createListInput, user)
   }
 
   @Query(() => [List], { name: 'findAllLists' })
-  findAll() {
-    return this.listsService.findAll();
+  findAll(
+    @CurrentUser([ValidRoles.admin]) user: User
+  ) {
+    return this.listsService.findAll(user);
   }
 
   @Query(() => List, { name: 'findOneList' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.listsService.findOne(id);
+  findOne(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser([ValidRoles.admin]) user: User
+  ) {
+    return this.listsService.findOne(id, user);
   }
 
   @Mutation(() => List)

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ListsService } from './lists.service';
 import { ListsResolver } from './lists.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Item } from '../items/entities/item.entity';
+import { List } from './entities/list.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Item])
+    TypeOrmModule.forFeature([List])
   ],
   providers: [ListsResolver, ListsService]
 })
