@@ -75,7 +75,9 @@ export class UsersResolver {
   @ResolveField(() => [List], {name: 'getListByUser'})
   async getListsByUser(
     @Parent() user: User,
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs
   ){
-    return await this.listsService.findAll(user);
+    return await this.listsService.findAll(user, paginationArgs, searchArgs);
   }
 }

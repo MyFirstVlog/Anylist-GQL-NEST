@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { List } from './entities/list.entity';
 import { Repository } from 'typeorm';
 import { StringArraySupportOption } from 'prettier';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
+import { SearchArgs } from '../common/dto/args/search.args';
 
 @Injectable()
 export class ListsService {
@@ -24,14 +26,31 @@ export class ListsService {
     return await this.listRepository.save(list);
   }
 
-  async findAll(user: User) {
-    return await this.listRepository.find({
-     where: {
-      user: {
-        id: user.id
+  async findAll(user: User, paginationArgs: PaginationArgs, searchArgs: SearchArgs) {
+
+    const {limit, offset} = paginationArgs;
+    const {search} = searchArgs;
+
+    // return await this.listRepository.find({
+    //  where: {
+    //   user: {
+    //     id: user.id
+    //   }
+    //  } 
+    // });
+
+    const queryBuilder = this.listRepository.createQueryBuilder()
+      .take(limit)
+      .skip(offset)
+      .where(`"userId" = :userId`, {userId: user.id});
+
+      if(search){
+        queryBuilder.andWhere(`LOWER(name) like :name`, {name: `%${search.toLowerCase()}%`})
       }
-     } 
-    });
+
+      // queryBuilder.orderBy("name", "ASC");
+
+    return queryBuilder.getMany();
   }
 
   async findOne(id: string, user: User) {

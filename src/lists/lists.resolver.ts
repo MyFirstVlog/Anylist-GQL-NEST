@@ -8,6 +8,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
 import { CurrentUser } from '../decoratos/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { ValidRoles } from '../auth/enums/valid-roles.enum';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
+import { SearchArgs } from '../common/dto/args/search.args';
 
 @Resolver(() => List)
 @UseGuards(JwtAuthGuard)
@@ -25,9 +27,11 @@ export class ListsResolver {
 
   @Query(() => [List], { name: 'findAllLists' })
   findAll(
-    @CurrentUser([ValidRoles.admin]) user: User
+    @CurrentUser([ValidRoles.admin]) user: User,
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs
   ) {
-    return this.listsService.findAll(user);
+    return this.listsService.findAll(user, paginationArgs ,searchArgs);
   }
 
   @Query(() => List, { name: 'findOneList' })
