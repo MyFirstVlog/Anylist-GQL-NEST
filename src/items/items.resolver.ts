@@ -30,7 +30,7 @@ export class ItemsResolver {
   ) {
     console.log({paginationArgs, searchArgs});
     
-    return this.itemsService.findAll(user, paginationArgs);
+    return this.itemsService.findAll(user, paginationArgs, searchArgs);
   }
 
   @Query(() => Item, { name: 'findOne' })
