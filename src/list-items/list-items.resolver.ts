@@ -3,8 +3,11 @@ import { ListItemsService } from './list-items.service';
 import { ListItem } from './entities/list-item.entity';
 import { CreateListItemInput } from './dto/create-list-item.input';
 import { UpdateListItemInput } from './dto/update-list-item.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
 
 @Resolver(() => ListItem)
+@UseGuards(JwtAuthGuard)
 export class ListItemsResolver {
   constructor(private readonly listItemsService: ListItemsService) {}
 
@@ -18,18 +21,18 @@ export class ListItemsResolver {
     return this.listItemsService.findAll();
   }
 
-  @Query(() => ListItem, { name: 'listItem' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.listItemsService.findOne(id);
-  }
+  // @Query(() => ListItem, { name: 'listItem' })
+  // findOne(@Args('id', { type: () => Int }) id: number) {
+  //   return this.listItemsService.findOne(id);
+  // }
 
-  @Mutation(() => ListItem)
-  updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput) {
-    return this.listItemsService.update(updateListItemInput.id, updateListItemInput);
-  }
+  // @Mutation(() => ListItem)
+  // updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput) {
+  //   return this.listItemsService.update(updateListItemInput.id, updateListItemInput);
+  // }
 
-  @Mutation(() => ListItem)
-  removeListItem(@Args('id', { type: () => Int }) id: number) {
-    return this.listItemsService.remove(id);
-  }
+  // @Mutation(() => ListItem)
+  // removeListItem(@Args('id', { type: () => Int }) id: number) {
+  //   return this.listItemsService.remove(id);
+  // }
 }
