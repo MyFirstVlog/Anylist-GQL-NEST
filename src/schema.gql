@@ -6,6 +6,7 @@ type ListItem {
   id: ID!
   quantity: Float!
   completed: Boolean!
+  list: List!
   item: Item!
 }
 
@@ -13,7 +14,8 @@ type List {
   id: ID!
   name: String!
   user: User!
-  items: [ListItem!]!
+  items(offset: Int = 0, limit: Int = 10, search: String): [ListItem!]!
+  totalItems: Int!
 }
 
 type User {
@@ -48,7 +50,7 @@ type Query {
   findOne(id: ID!): Item!
   findAllLists(offset: Int = 0, limit: Int = 10, search: String): [List!]!
   findOneList(id: ID!): List!
-  listItems: [ListItem!]!
+  findOneListItem(id: String!): ListItem!
 }
 
 enum ValidRoles {
@@ -69,6 +71,7 @@ type Mutation {
   updateList(updateListInput: UpdateListInput!): List!
   removeList(id: ID!): List!
   createListItem(createListItemInput: CreateListItemInput!): ListItem!
+  updateListItem(updateListItemInput: UpdateListItemInput!): ListItem!
   executeSeed: Boolean!
 }
 
@@ -117,4 +120,12 @@ input CreateListItemInput {
   completed: Boolean! = false
   listId: String!
   itemId: String!
+}
+
+input UpdateListItemInput {
+  quantity: Float = 0
+  completed: Boolean = false
+  listId: String
+  itemId: String
+  id: ID!
 }

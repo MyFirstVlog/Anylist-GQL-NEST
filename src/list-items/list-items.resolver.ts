@@ -16,20 +16,20 @@ export class ListItemsResolver {
     return this.listItemsService.create(createListItemInput);
   }
 
-  @Query(() => [ListItem], { name: 'listItems' })
-  findAll() {
-    return this.listItemsService.findAll();
+  // @Query(() => [ListItem], { name: 'listItems' })
+  // findAll() {
+  //   // return this.listItemsService.findAll();
+  // }
+
+  @Query(() => ListItem, { name: 'findOneListItem' })
+  findOne(@Args('id', { type: () => String }) id: string): Promise<ListItem> {
+    return this.listItemsService.findOne(id);
   }
 
-  // @Query(() => ListItem, { name: 'listItem' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.listItemsService.findOne(id);
-  // }
-
-  // @Mutation(() => ListItem)
-  // updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput) {
-  //   return this.listItemsService.update(updateListItemInput.id, updateListItemInput);
-  // }
+  @Mutation(() => ListItem)
+  updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput) {
+    return this.listItemsService.update(updateListItemInput.id, updateListItemInput);
+  }
 
   // @Mutation(() => ListItem)
   // removeListItem(@Args('id', { type: () => Int }) id: number) {
