@@ -4,10 +4,9 @@ import { Item } from './entities/item.entity';
 import { CreateItemInput, UpdateItemInput } from './dto/inputs';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
-import { CurrentUser } from 'src/decoratos/current-user.decorator';
+import { CurrentUser } from '../decoratos/current-user.decorator';
 import { User } from '../users/entities/user.entity';
-import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
-import { PaginationArgs } from 'src/common/dto/args/pagination.args';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 import { SearchArgs } from '../common/dto/args/search.args';
 @Resolver(() => Item)
 @UseGuards(JwtAuthGuard)

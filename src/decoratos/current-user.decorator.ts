@@ -1,6 +1,6 @@
 import { ExecutionContext, ForbiddenException, InternalServerErrorException, createParamDecorator } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
-import { ValidRoles } from "src/auth/enums/valid-roles.enum";
+import { ValidRoles } from "../auth/enums/valid-roles.enum";
 import { User } from "../users/entities/user.entity";
 
 
