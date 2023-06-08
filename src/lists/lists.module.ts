@@ -11,6 +11,6 @@ import { ListItemsModule } from '../list-items/list-items.module';
     ListItemsModule
   ],
   providers: [ListsResolver, ListsService],
-  exports: [ListsService]
+  exports: [ListsService, TypeOrmModule]
 })
 export class ListsModule {}
