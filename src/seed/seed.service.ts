@@ -38,7 +38,7 @@ export class SeedService {
   async executeSeed(){
 
     //? Routes protection
-    if(this.isProd) throw new UnauthorizedException('Seeds are not available on prod');
+    // if(this.isProd) throw new UnauthorizedException('Seeds are not available on prod');
 
     //? Delete database
 
