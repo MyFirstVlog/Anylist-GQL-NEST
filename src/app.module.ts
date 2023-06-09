@@ -29,11 +29,11 @@ import { ListItemsModule } from './list-items/list-items.module';
           ApolloServerPluginLandingPageLocalDefault()
         ],
         context({req}){
-          const token = req.headers.authorization?.replace("Bearer ", "");
-          if (!token) throw new Error('token not valid'); 
+          // const token = req.headers.authorization?.replace("Bearer ", "");
+          // if (!token) throw new Error('token not valid'); 
 
-          const payload = jwtService.decode(token);
-          if(!Object.keys(payload).includes('id')) throw new Error('body not valid'); 
+          // const payload = jwtService.decode(token);
+          // if(!Object.keys(payload).includes('id')) throw new Error('body not valid'); 
         }
       }),
     }),
