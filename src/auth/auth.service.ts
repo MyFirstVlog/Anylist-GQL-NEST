@@ -3,7 +3,7 @@ import { AuthResponse } from './dto/types/auth-response.type';
 import { SignupInput } from './dto/input/signup.input';
 import { UsersService } from '../users/users.service';
 import { LoginInput } from './dto/input/login.input';
-import * as bcrypt from 'bcrypt'; 
+import * as bcrypt from 'bcryptjs'; 
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
 
